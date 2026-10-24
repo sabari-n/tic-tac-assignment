@@ -1,0 +1,36 @@
+# ---------- .NET (backend) ----------
+# Build output
+bin/
+obj/
+# Test results / coverage
+TestResults/
+*.trx
+coverage*.xml
+# User-specific / IDE
+*.user
+*.suo
+.vs/
+*.rsuser
+# Local secrets (never commit)
+appsettings.*.local.json
+
+# ---------- Node / Angular (frontend) ----------
+node_modules/
+dist/
+.angular/
+coverage/
+npm-debug.log*
+yarn-error.log*
+
+# ---------- Editors / OS ----------
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# ---------- Environment ----------
+.env
+.env.*
+!.env.example
