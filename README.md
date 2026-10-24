@@ -237,7 +237,7 @@ Without Docker: `cd backend && dotnet test`, and `cd frontend && npm run test:ci
 3. I added constraints of my own: run everything with Docker and Docker Compose, use LTS versions, and keep the plan in the repo as [plan.md](plan.md).
 4. That plan has 10 steps (0–9). Each step lists the reasoning behind it and a check to run.
 
-**Prompts used (summarised)**
+**Prompts used (summarised).** The full list, word for word and in order, mapped to plan steps and commits, is in [PROMPTS.md](PROMPTS.md).
 
 | # | Prompt (paraphrased) | Outcome |
 |---|---|---|
