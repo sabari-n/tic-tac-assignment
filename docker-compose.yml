@@ -1,0 +1,14 @@
+services:
+  api:
+    build:
+      context: ./backend
+      target: final
+    ports:
+      - "5000:8080"   # host:container -> Swagger at http://localhost:5000/swagger
+
+  # Test runners are opt-in: `docker compose --profile test run --rm api-tests`
+  api-tests:
+    build:
+      context: ./backend
+      target: test
+    profiles: ["test"]

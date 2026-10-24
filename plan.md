@@ -30,7 +30,7 @@ tic-tak/
   backend/
     Dockerfile                 # stages: build -> test -> publish -> runtime (aspnet:10.0)
     .dockerignore
-    TicTacToe.sln
+    TicTacToe.slnx                # .NET 10 default XML solution format
     src/TicTacToe.Domain/      # pure game rules, no ASP.NET dependency
     src/TicTacToe.Api/         # controllers, DTOs, in-memory store, DI
     tests/TicTacToe.Tests/     # xUnit tests (domain + service)
@@ -79,7 +79,7 @@ tic-tak/
 ## Step 3: Domain tests (TicTacToe.Tests)
 Write these tests now, before the API, to cover every required test case:
 valid move, each invalid move (out of board, occupied, after completion, wrong player), turn switching, row/column/both-diagonal wins plus winning cells, draw, reset, undo two-player (O's move removed and it is O's turn again), undo computer (O+X removed and it is X's turn), undo disabled with no moves and after completion, and each computer priority rule (one test per rule).
-- **Verify:** `docker build --target test ./backend`, or `docker compose --profile test run --rm api-tests` (a compose service that targets the `test` stage). All tests should pass.
+- **Verify:** `docker compose --profile test run --rm --build api-tests` (a compose service that targets the `test` stage, which runs `dotnet test` as its CMD). All tests should pass.
 
 ## Step 4: Application service and API (TicTacToe.Api)
 - `IGameStore` / `InMemoryGameStore` (singleton `ConcurrentDictionary<Guid, Game>`); `Scoreboard` is registered as a singleton.
