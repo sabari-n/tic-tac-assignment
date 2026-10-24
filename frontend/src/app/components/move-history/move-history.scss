@@ -1,0 +1,31 @@
+:host { display: block; }
+
+.scroll {
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+th, td {
+  padding: 6px 8px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+th {
+  position: sticky;
+  top: 0;
+  background: var(--surface);
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.x { color: var(--x); font-weight: 700; }
+.o { color: var(--o); font-weight: 700; }
+
+.empty { color: var(--text-muted); }

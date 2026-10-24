@@ -1,1 +1,44 @@
-<h1>Tic Tac Toe</h1>
+<header>
+  <h1>Tic Tac Toe</h1>
+</header>
+
+@if (store.error(); as error) {
+  <div class="error" role="alert">
+    <span>{{ error }}</span>
+    <button type="button" class="dismiss" aria-label="Dismiss error" (click)="store.dismissError()">×</button>
+  </div>
+}
+
+<main class="layout">
+  <section class="card play">
+    <app-status-bar
+      [state]="store.state()"
+      [disabled]="store.loading()"
+      (modeChange)="store.newGame($event)"
+    />
+
+    <app-board
+      [board]="board()"
+      [winningCells]="store.state()?.winningCells ?? []"
+      [disabled]="boardLocked()"
+      (cellClick)="store.play($event)"
+    />
+
+    <div class="actions">
+      <button type="button" [disabled]="!store.canUndo()" (click)="store.undo()">Undo Last Move</button>
+      <button type="button" class="secondary" [disabled]="!store.state() || store.loading()" (click)="store.reset()">
+        Reset Game
+      </button>
+    </div>
+  </section>
+
+  <aside class="side">
+    <app-scoreboard-panel
+      class="card"
+      [score]="store.scoreboard()"
+      [disabled]="store.loading()"
+      (resetScores)="store.resetScoreboard()"
+    />
+    <app-move-history class="card" [moves]="store.state()?.moves ?? []" />
+  </aside>
+</main>

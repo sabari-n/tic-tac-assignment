@@ -1,0 +1,20 @@
+<h2>Scoreboard</h2>
+
+<dl class="tiles">
+  <div class="tile">
+    <dt>X wins</dt>
+    <dd class="x" data-testid="x-wins">{{ score().xWins }}</dd>
+  </div>
+  <div class="tile">
+    <dt>O wins</dt>
+    <dd class="o" data-testid="o-wins">{{ score().oWins }}</dd>
+  </div>
+  <div class="tile">
+    <dt>Draws</dt>
+    <dd data-testid="draws">{{ score().draws }}</dd>
+  </div>
+</dl>
+
+<button type="button" class="secondary" [disabled]="disabled()" (click)="resetScores.emit()">
+  Reset Scoreboard
+</button>

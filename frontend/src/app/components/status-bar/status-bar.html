@@ -1,0 +1,23 @@
+<div class="modes" role="radiogroup" aria-label="Game mode">
+  @for (mode of modes; track mode.value) {
+    <button
+      type="button"
+      role="radio"
+      [class.active]="state()?.mode === mode.value"
+      [attr.aria-checked]="state()?.mode === mode.value"
+      [disabled]="disabled()"
+      (click)="select(mode.value)"
+    >
+      {{ mode.label }}
+    </button>
+  }
+</div>
+
+<p
+  class="message"
+  [class.won]="state()?.status === 'Won'"
+  [class.draw]="state()?.status === 'Draw'"
+  aria-live="polite"
+>
+  {{ message() }}
+</p>

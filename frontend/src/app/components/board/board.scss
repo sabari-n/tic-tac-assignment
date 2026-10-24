@@ -1,0 +1,37 @@
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  width: min(100%, 360px);
+  aspect-ratio: 1;
+}
+
+.cell {
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  font-size: clamp(2rem, 8vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 120ms, transform 120ms;
+
+  &:enabled:hover {
+    background: var(--surface-hover);
+    transform: scale(1.02);
+  }
+
+  // Occupied/locked cells keep full colour; only the cursor changes.
+  &:disabled {
+    cursor: default;
+    color: inherit;
+  }
+
+  &.x { color: var(--x); }
+  &.o { color: var(--o); }
+
+  &.win {
+    background: var(--win-bg);
+    border-color: var(--win-border);
+  }
+}

@@ -1,0 +1,32 @@
+:host { display: block; }
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 0 0 12px;
+}
+
+.tile {
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  text-align: center;
+}
+
+dt {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+dd {
+  margin: 4px 0 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.x { color: var(--x); }
+.o { color: var(--o); }
+
+button { width: 100%; }

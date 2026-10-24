@@ -1,0 +1,39 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.modes {
+  display: inline-flex;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 4px;
+  background: var(--surface);
+
+  button {
+    border: 0;
+    border-radius: 999px;
+    padding: 6px 16px;
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+
+    &.active {
+      background: var(--accent);
+      color: var(--on-accent);
+    }
+
+    &:disabled { cursor: default; }
+  }
+}
+
+.message {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+
+  &.won { color: var(--win-text); }
+  &.draw { color: var(--text-muted); }
+}

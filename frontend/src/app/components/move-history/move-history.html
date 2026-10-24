@@ -1,0 +1,27 @@
+<h2>Move History</h2>
+
+@if (moves().length === 0) {
+  <p class="empty">No moves yet.</p>
+} @else {
+  <div class="scroll">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Move</th>
+          <th scope="col">Player</th>
+          <th scope="col">Position</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (move of moves(); track move.number) {
+          <tr>
+            <td>{{ move.number }}</td>
+            <td [class]="move.player === 'X' ? 'x' : 'o'">{{ move.player }}</td>
+            <!-- API positions are 0-based; people count from 1. -->
+            <td>Row {{ move.row + 1 }}, Column {{ move.col + 1 }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}

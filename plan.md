@@ -120,6 +120,7 @@ valid move, each invalid move (out of board, occupied, after completion, wrong p
 ## Step 6: Frontend API layer
 - `models.ts` mirrors the response DTOs. `GameApiService` has `createGame`, `getGame`, `move`, `undo`, `reset`, `getScoreboard`, and `resetScoreboard`, all returning Observables.
 - `GameStore` (a signal-based service) holds `state`, `error`, and `loading`. Every action replaces `state` with the backend response; **no rules are computed on the client.**
+- Files follow the Angular v20+ naming (`core/game-api.ts` → `GameApi`, `core/game-store.ts` → `GameStore`). Specs for both are written here (HttpTestingController), so Step 8 focuses on components.
 
 ## Step 7: UI components
 - `BoardComponent`: a 3×3 grid of buttons. A button is disabled when the cell is occupied, the game is over, or a request is loading. Winning cells get a `.win` class.
