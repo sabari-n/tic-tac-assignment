@@ -1,6 +1,49 @@
+# Runnable API examples (VS Code "REST Client" extension, Rider, or Visual Studio).
+# Start the API first: docker compose up --build api
 @host = http://localhost:5000
 
 ### Health check
 GET {{host}}/health
 
-###
+### Create a game (mode: "TwoPlayer" | "VsComputer")
+# @name create
+POST {{host}}/api/games
+Content-Type: application/json
+
+{ "mode": "TwoPlayer" }
+
+### Game id from the response above
+@gameId = {{create.response.body.$.id}}
+
+### Get current game state
+GET {{host}}/api/games/{{gameId}}
+
+### Submit a move (row/col are 0-based; player must be whose turn it is)
+POST {{host}}/api/games/{{gameId}}/moves
+Content-Type: application/json
+
+{ "player": "X", "row": 0, "col": 0 }
+
+### Invalid: same cell again -> 409 CellOccupied
+POST {{host}}/api/games/{{gameId}}/moves
+Content-Type: application/json
+
+{ "player": "O", "row": 0, "col": 0 }
+
+### Invalid: outside the board -> 400 OutOfBounds
+POST {{host}}/api/games/{{gameId}}/moves
+Content-Type: application/json
+
+{ "player": "O", "row": 3, "col": 0 }
+
+### Undo (two-player: last move; computer mode: computer's move + your previous move)
+POST {{host}}/api/games/{{gameId}}/undo
+
+### Reset the game (scoreboard unchanged)
+POST {{host}}/api/games/{{gameId}}/reset
+
+### Get scoreboard
+GET {{host}}/api/scoreboard
+
+### Reset scoreboard
+POST {{host}}/api/scoreboard/reset

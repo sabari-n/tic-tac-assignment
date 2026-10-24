@@ -104,6 +104,7 @@ valid move, each invalid move (out of board, occupied, after completion, wrong p
 
 - Errors are returned as `ProblemDetails` with a readable `detail` that the UI shows.
 - Add a few service tests: the scoreboard updates once, a computer move is applied after the human's move, and no computer move happens after X wins.
+- Add HTTP integration tests (`WebApplicationFactory<Program>`) for status codes, string enums, and the ProblemDetails `code` extension.
 - **Verify:** rebuild the api container, then play a full game through Swagger or a `.http` file (`TicTacToe.Api.http`, committed as API documentation).
 
 ## Step 5: Angular skeleton + Dockerfile + nginx
