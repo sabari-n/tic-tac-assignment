@@ -6,9 +6,26 @@ services:
     ports:
       - "5000:8080"   # host:container -> Swagger at http://localhost:5000/swagger
 
-  # Test runners are opt-in: `docker compose --profile test run --rm api-tests`
+  web:
+    build:
+      context: ./frontend
+      target: final
+    ports:
+      - "4200:80"     # app at http://localhost:4200; /api is proxied to the api service
+    depends_on:
+      - api
+
+  # Test runners are opt-in:
+  #   docker compose --profile test run --rm api-tests
+  #   docker compose --profile test run --rm web-tests
   api-tests:
     build:
       context: ./backend
+      target: test
+    profiles: ["test"]
+
+  web-tests:
+    build:
+      context: ./frontend
       target: test
     profiles: ["test"]

@@ -11,7 +11,7 @@ The user wants to build this **step by step**, reviewing and running each step t
 | Topic | Choice | Rationale to state in README |
 |---|---|---|
 | Execution | **Docker Compose** (api + web), multi-stage Dockerfiles | One command for reviewers; no local SDK or version mismatch |
-| Frontend | **Angular 21 LTS** (CLI pinned to 21.2.28), standalone components + signals, Vitest, Node 22 image | Newest LTS line, so it's stable and long-supported; pinned so scaffolding is reproducible |
+| Frontend | **Angular 21 LTS** (CLI pinned to 21.2.28), standalone components + signals, Vitest, `node:24-alpine` image (npm 11) | Newest Angular LTS line, pinned so scaffolding is reproducible. Node 24 (Active LTS) because the npm 10 bundled with Node 22 crashes resolving this lockfile (`edgesOut` bug) |
 | Backend | **.NET 10 (LTS)** Web API, **Controllers** | Current LTS; controllers are familiar and give explicit routing |
 | Undo after completion | **Option A: disabled** | Scoreboard stays final; no "un-scoring" logic |
 | Computer-mode undo | **Pop moves until it is X's turn** (normally O+X) | Works for every reachable state |
@@ -35,7 +35,7 @@ tic-tak/
     src/TicTacToe.Api/         # controllers, DTOs, in-memory store, DI
     tests/TicTacToe.Tests/     # xUnit tests (domain + service)
   frontend/
-    Dockerfile                 # stages: deps -> test -> build (node:22) -> nginx runtime
+    Dockerfile                 # stages: deps -> test -> build (node:24-alpine) -> nginx runtime
     nginx.conf                 # serves the SPA + proxies /api to the api service
     .dockerignore
     (Angular app)
@@ -108,7 +108,7 @@ valid move, each invalid move (out of board, occupied, after completion, wrong p
 - **Verify:** rebuild the api container, then play a full game through Swagger or a `.http` file (`TicTacToe.Api.http`, committed as API documentation).
 
 ## Step 5: Angular skeleton + Dockerfile + nginx
-- Scaffold via the node:22 container: `ng new frontend --standalone --style=scss --routing=false --skip-install`, then `provideHttpClient()` in app.config. All API calls use the relative base URL `/api`.
+- Scaffold via the node:24-alpine container: `ng new frontend --standalone --style=scss --routing=false --skip-install`, then `provideHttpClient()` in app.config. All API calls use the relative base URL `/api`.
 - `frontend/nginx.conf`: serve `dist/.../browser`, use `try_files $uri /index.html`, and add `location /api/ { proxy_pass http://api:8080; }`.
 - `frontend/Dockerfile`:
   - `deps` (`npm ci`), `test` (`ng test` headless, no watch), `build` (`ng build`).
