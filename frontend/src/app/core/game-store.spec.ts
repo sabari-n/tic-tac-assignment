@@ -1,24 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { gameState } from '../testing/fixtures';
 import { GameStore } from './game-store';
-import { GameState } from './models';
-
-function gameState(overrides: Partial<GameState> = {}): GameState {
-  return {
-    id: 'g1',
-    mode: 'TwoPlayer',
-    status: 'InProgress',
-    currentPlayer: 'X',
-    winner: null,
-    board: Array(9).fill(null),
-    winningCells: [],
-    moves: [],
-    canUndo: false,
-    scoreboard: { xWins: 0, oWins: 0, draws: 0 },
-    ...overrides,
-  };
-}
 
 describe('GameStore', () => {
   let store: GameStore;

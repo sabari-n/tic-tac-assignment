@@ -136,6 +136,7 @@ Write tests using Angular 21's default test runner (Vitest), run in the Dockerfi
 - `GameApiService` calls the correct URLs (via `HttpTestingController`).
 - `BoardComponent` renders X/O, disables occupied cells, and highlights winning cells.
 - The Undo button is disabled when `canUndo` is false.
+- Also: StatusBar messages + mode toggle, MoveHistory 1-based positions, ScoreboardPanel counts + reset event, and App-level integration (click → request → rendered response, win locks board, API error alert). Shared builders live in `src/app/testing/fixtures.ts`.
 - **Verify:** `docker compose --profile test run --rm web-tests`.
 
 ## Step 9: README and submission

@@ -1,12 +1,22 @@
+:host {
+  display: block;
+  width: min(100%, 360px);
+}
+
 .board {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  // Fixed 3x3 tracks: minmax(0, 1fr) stops a cell's content (the X/O glyph)
+  // from stretching its row or column, so all nine cells stay equal squares.
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(3, minmax(0, 1fr));
   gap: 8px;
-  width: min(100%, 360px);
   aspect-ratio: 1;
 }
 
 .cell {
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
   border: 2px solid var(--border);
   border-radius: 12px;
   background: var(--surface);
@@ -21,10 +31,11 @@
     transform: scale(1.02);
   }
 
-  // Occupied/locked cells keep full colour; only the cursor changes.
+  // Occupied/locked cells are disabled buttons, but must not look faded like
+  // other disabled buttons (global style) — the marks are the game state.
   &:disabled {
+    opacity: 1;
     cursor: default;
-    color: inherit;
   }
 
   &.x { color: var(--x); }
