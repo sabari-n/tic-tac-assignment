@@ -68,12 +68,13 @@ tic-tak/
 - `Move` record: Number, Player, Row, Col (0-based internally, shown 1-based in the UI).
 - `Game` class:
   - Holds `Id`, `Mode`, `Board` (Player?[9]), `CurrentPlayer`, `Status`, `Winner`, `WinningCells`, `Moves` list.
-  - `MakeMove(player, row, col)` validates in this order: game finished, wrong player, out of bounds, occupied. It throws a `InvalidMoveException(reason)`. On success it places the mark, records the move, re-evaluates status, and switches the turn only if the game is still InProgress.
+  - `MakeMove(player, row, col)` validates in this order: game finished, wrong player, out of bounds, occupied. It throws a `GameRuleException(GameRuleError, message)`, and undo errors use the same exception. On success it places the mark, records the move, and re-evaluates status. **In VsComputer mode the computer's O reply is also applied inside `MakeMove`**, so the whole rule set lives in the domain and can be tested without the API.
+  - `CurrentPlayer` is **derived from the move count** (even means X), so undo restores the turn automatically.
   - `Undo()` throws when there are no moves or the game is finished (Option A). In TwoPlayer mode it pops 1 move. In VsComputer mode it pops until `CurrentPlayer == X` and at least one move is removed. **The board is rebuilt from the remaining moves**, which keeps history and board consistent by construction. Status is then recalculated.
   - `Reset()` clears the board and moves, sets status to InProgress and CurrentPlayer to X, and keeps the same Id and Mode.
 - `WinDetector`: 8 static lines; returns the winner and winning cells, or a draw when the board is full.
 - `ComputerPlayer.ChooseMove(board)`: priority is win, then block, then center (4), then corners (0,2,6,8), then the first empty cell. It is deterministic, which makes it testable.
-- `Scoreboard` class: XWins, OWins, Draws; `Record(status, winner)`; `Reset()`; guarded by a lock.
+- `Scoreboard` class: XWins, OWins, Draws; `Record(game)`; `Reset()`; guarded by a lock.
 - **Why rebuild the board on undo:** the move list is the single source of truth, so there is no separate undo stack that can drift out of sync.
 
 ## Step 3: Domain tests (TicTacToe.Tests)
@@ -86,7 +87,7 @@ valid move, each invalid move (out of board, occupied, after completion, wrong p
 - `GameService` runs each operation under a per-game lock:
   - `Create(mode)`
   - `Get(id)`
-  - `Move(id, player, row, col)`: apply the human move. If the game is VsComputer and still InProgress, apply the computer's O move. **Record the score only when the status changes from InProgress to Won/Draw**, because that transition happens exactly once per game, which satisfies "update once". (With Option A, Undo can't reopen a finished game, and Reset starts a new game.)
+  - `Move(id, player, row, col)`: call `game.MakeMove` (which already includes the computer reply). **Record the score only when the status changes from InProgress to Won/Draw**, because that transition happens exactly once per game, which satisfies "update once". (With Option A, Undo can't reopen a finished game, and Reset starts a new game.)
   - `Undo`, `Reset`
 - DTOs: `CreateGameRequest { mode }`, `MoveRequest { player, row, col }` (the game ID comes from the route), and `GameStateResponse { id, board[9] ("X"/"O"/null), currentPlayer, mode, status, winner, winningCells[], moves[], canUndo, scoreboard }`. The scoreboard is embedded so one response renders the whole screen.
 - Controllers:
